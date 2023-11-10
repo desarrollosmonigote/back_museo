@@ -1,4 +1,5 @@
 const { Shift, Client } = require("../models");
+const { Op } = require("sequelize");
 
 class ShiftsServices {
   static async getAll() {
@@ -13,8 +14,18 @@ class ShiftsServices {
 
   static async getAllAvailables() {
     try {
+      const fechaActual = new Date();
+      const mesSiguiente = fechaActual.getMonth() + 1;
+      const anoSiguiente =
+      fechaActual.getFullYear() + (mesSiguiente === 12 ? 1 : 0);
       const response = await Shift.findAll({
-        where: { status: "disponible"},
+        where: {
+          status: "disponible",
+          fecha_formato_fullcalendar: {
+            [Op.gte]: new Date(anoSiguiente, mesSiguiente, 1).toISOString(),
+            [Op.lt]: new Date(anoSiguiente, mesSiguiente + 1, 1).toISOString(),
+          },
+        },
         include: [
           {
             model: Client,
