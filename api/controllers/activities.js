@@ -1,8 +1,17 @@
+const { where } = require("sequelize");
 const ActivitiesServices = require("../services/activities");
 
 class ActivitiesController {
   static async getAll(req, res) {
     const { error, data } = await ActivitiesServices.getAll();
+    if (error) {
+      return res.status(data.status || 500).send({ message: data.message });
+    }
+    res.send(data);
+  }
+
+  static async getAllActive(req, res) {
+    const { error, data } = await ActivitiesServices.getAllActive();
     if (error) {
       return res.status(data.status || 500).send({ message: data.message });
     }

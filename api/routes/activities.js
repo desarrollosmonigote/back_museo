@@ -7,6 +7,8 @@ const router = express.Router();
 
 // api/activities
 router.get("/", ActivitiesController.getAll);
+// ruta para las actividades activas
+router.get("/active", ActivitiesController.getAllActive);
 router.get("/:id", ActivitiesController.getSingle);
 router.post(
   "/",

@@ -19,7 +19,6 @@ app.use(cors({ credentials: true, origin: ["http://formmuseo.desarrollosmonigote
 app.use(express.static(__dirname + "/public"));
 app.use("/multer/img", express.static(__dirname + "/public/multer/img"));
 
-
 app.use("/api", routes);
 
 db.sync({ force: false }).then(() => {

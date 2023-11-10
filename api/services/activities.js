@@ -11,6 +11,16 @@ class ActivitiesServices {
     }
   }
 
+  static async getAllActive() {
+    try {
+      const response = await Activity.findAll({ where: { status: "activo" } });
+      return { error: false, data: response };
+    } catch (error) {
+      console.error(error);
+      return { error: true, data: error };
+    }
+  }
+
   static async getSingle(id) {
     try {
       const response = await Activity.findByPk(id);

@@ -36,6 +36,7 @@ class ShiftsServices {
           {
             model: Client,
             attributes: [
+              "id",
               "mail",
               "telefono",
               "datos_del_grupo",
