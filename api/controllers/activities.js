@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const ActivitiesServices = require("../services/activities");
 
 class ActivitiesController {

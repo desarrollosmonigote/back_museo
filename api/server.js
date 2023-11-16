@@ -14,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(cors({ credentials: true, origin: ["http://formmuseo.desarrollosmonigote.com", "http://dashmuseo.desarrollosmonigote.com" ]}));
+app.use(cors({ credentials: true, origin: ["http://localhost:5173", "http://localhost:5174" ]}));
 
 app.use(express.static(__dirname + "/public"));
 app.use("/multer/img", express.static(__dirname + "/public/multer/img"));

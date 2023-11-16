@@ -28,9 +28,12 @@ class ClientsController {
 
   static async createClient(req, res) {
     const body = req.body;
-    const { error, data } = await ClientsServices.createClient(body);
+    const { statusCode, error, data } = await ClientsServices.createClient(body);
     if (error) {
-      return res.status(data.status || 500).send({ message: data.message });
+      return res.status(statusCode || 500).send({ message: data.message });
+    }
+    if (statusCode === 409) {
+      return res.status(409).send({ message: data });
     }
     const token = generateClientToken(data);
     res.cookie("token", token);

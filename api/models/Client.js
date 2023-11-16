@@ -7,7 +7,6 @@ Client.init(
   {
     mail: {
       type: S.DataTypes.STRING,
-      unique: true,
       validate: { isEmail: true },
     },
     telefono: { type: S.STRING, allowNull: false },
