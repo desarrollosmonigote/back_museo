@@ -63,6 +63,7 @@ class ShiftsServices {
               "grupo",
               "tipo_de_curso",
               "actividad_solicitada",
+              "createdAt"
             ],
           },
         ],
