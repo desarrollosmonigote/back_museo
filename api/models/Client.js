@@ -24,7 +24,7 @@ Client.init(
     tipo_de_curso: { type: S.STRING},
     actividad_solicitada: { type: S.STRING },
   },
-  { sequelize: db, modelName: "client", timestamps: false }
+  { sequelize: db, modelName: "client" }
 );
 
 module.exports = Client;

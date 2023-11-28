@@ -7,6 +7,7 @@ const { validateAdmin } = require("../middlewares/auth");
 router.get("/", ShiftsController.getAll);
 router.get("/availables", ShiftsController.getAllShiftAvailables);
 router.get("/andclients", ShiftsController.getAllShiftsAndClients);
+router.get("/andclients/sorted", ShiftsController.getAllShiftsAndClientsSorted);
 router.get("/andclients/:id", ShiftsController.getAllShiftAndClientById);
 router.get("/:id", ShiftsController.getSingle);
 router.post("/", /* validateAdmin, */ ShiftsController.createShift);

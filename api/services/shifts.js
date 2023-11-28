@@ -74,6 +74,55 @@ class ShiftsServices {
     }
   }
 
+  static async getAllShiftsAndClientsSorted() {
+    try {
+      const fechaActual = new Date()
+      const response = await Shift.findAll({
+        include: [
+          {
+            model: Client,
+            attributes: [
+              "id",
+              "mail",
+              "telefono",
+              "datos_del_grupo",
+              "institucion",
+              "direccion",
+              "provincia",
+              "localidad",
+              "gestion",
+              "cantidad_de_personas",
+              "cantidad_de_docentes",
+              "requerimientos_especificos",
+              "autoriza_foto",
+              "grupo",
+              "tipo_de_curso",
+              "actividad_solicitada",
+              "createdAt"
+            ],
+          },
+        ],
+      });
+      const turnosFiltrados = response.filter(turno => {
+        const fechaTurno = new Date(turno.fecha_formato_fullcalendar)
+        return fechaTurno >= fechaActual
+      })
+      turnosFiltrados.sort((a, b) => {
+        const fechaA = new Date(a.fecha_formato_fullcalendar)
+        const fechaB = new Date(b.fecha_formato_fullcalendar)
+        return fechaA - fechaB
+      })
+
+
+      return { error: false, data: turnosFiltrados };
+    } catch (error) {
+      console.log(error);
+      return { error: true, data: error };
+    }
+  }
+
+
+
   static async getAllShiftAndClientById(id) {
     try {
       const response = await Shift.findOne({

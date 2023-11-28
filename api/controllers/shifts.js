@@ -25,6 +25,14 @@ class ShiftsController {
     res.send(data);
   }
 
+  static async getAllShiftsAndClientsSorted(req, res) {
+    const { error, data } = await ShiftsServices.getAllShiftsAndClientsSorted();
+    if (error) {
+      return res.status(data.status || 500).send({ message: data.message });
+    }
+    res.send(data);
+  }
+
 
   static async getAllShiftAndClientById(req, res) {
     const { id } = req.params;
