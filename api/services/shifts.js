@@ -17,7 +17,7 @@ class ShiftsServices {
       const fechaActual = new Date();
       const mesSiguiente = fechaActual.getMonth() + 1;
       const anoSiguiente =
-      fechaActual.getFullYear() + (mesSiguiente === 12 ? 1 : 0);
+      fechaActual.getFullYear() + (mesSiguiente === 11 ? 1 : 0);
       const response = await Shift.findAll({
         where: {
           status: "disponible",
