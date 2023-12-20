@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node api/server.js",
     "seed": "node api/utils/seedDB/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "form": "node api/utils/seedDB/activeForm.js"
+
   },
   "keywords": [],
   "author": "",

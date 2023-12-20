@@ -1,5 +1,8 @@
+const { Model } = require("sequelize");
 const { Client } = require("../models");
 const { Shift } = require("../models");
+const emailService = require("../services/email");
+const { Op } = require("sequelize");
 
 class ClientsServices {
   static async getAll() {
@@ -24,6 +27,35 @@ class ClientsServices {
 
   static async createClient(body) {
     try {
+      const currentDate = new Date();
+      const nextMonthDate = new Date();
+      nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
+      const existClient = await Client.findAll({
+        where: {
+          mail: body.mail,
+        },
+        include: [
+          {
+            model: Shift,
+            as: 'shift',
+            attributes: ["fecha_formato_fullcalendar"],
+            where: {
+              fecha_formato_fullcalendar: {
+                [Op.gte]: currentDate,
+                [Op.lt]: nextMonthDate,
+              },
+            },
+          },
+        ],
+      });
+      
+      const clientesConTurnoEnMesSiguiente = existClient.filter((cliente) => {
+        return cliente.shift && cliente.shift.fecha_formato_fullcalendar;
+      });
+
+      if (clientesConTurnoEnMesSiguiente.length > 0) {
+        return { statusCode: 409, error: false, data: "El Cliente ya tiene un turno" };
+      }
       const response = await Client.create(body);
       const [affectdRows, updatedShift] = await Shift.update(
         { status: "ocupado" },
@@ -77,11 +109,15 @@ class ClientsServices {
           },
         };
       }
+      emailService.sendShiftCancelation(client.dataValues.mail);
       //actualizamos el turno a "disponible"
-      const [affectdRows, updatedShift] = await Shift.update({status: "disponible"}, {
-        where: { id: client.dataValues.shiftId },
-        returning: true,
-      });
+      const [affectdRows, updatedShift] = await Shift.update(
+        { status: "disponible" },
+        {
+          where: { id: client.dataValues.shiftId },
+          returning: true,
+        }
+      );
       // eliminamos el cliente
       const response = await Client.destroy({ where: { id } });
       return { error: false, data: response };
